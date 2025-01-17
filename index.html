@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Upload Service</title>
+  <link rel="icon" href="https://iili.io/2c3SkuV.md.jpg" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <style>
+    /* General Styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100%;
+      background-color: #2b2d42;
+      color: white;
+    }
+
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 0;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: #fff;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    section.upload-section {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #1a1b2d;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    section h2 {
+      text-align: center;
+      color: #e3e3e3;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="file"], input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 20px;
+      background-color: #333;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #1cdce8;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #17a8c7;
+    }
+
+    #loadingSpinner {
+      margin: 20px 0;
+      text-align: center;
+      display: none;
+    }
+
+    .spinner {
+      border: 4px solid transparent;
+      border-top: 4px solid #1cdce8;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #resultMessage {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .image-preview {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .image-preview img {
+      width: 300px;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+
+    .image-details {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #1cdce8;
+    }
+
+    #imageLink {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid #1cdce8;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    #imageLink:hover {
+      background-color: #1cdce8;
+    }
+
+    #copyUrlButton {
+      margin-top: 20px;
+      background-color: #444;
+      padding: 10px 20px;
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #copyUrlButton:hover {
+      background-color: #333;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      color: #1cdce8;
+    }
+
+    footer a {
+      color: #1cdce8;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      section.upload-section {
+        padding: 15px;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 1rem;
+      }
+
+      .image-preview img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+
+  <header>
+    <h1>Welcome to Image Uploader Site By <a href="https://t.me/swastik_raj" target="_blank" style="color: #1cdce8; font-weight: bold;">Swastik</a> / <a href="https://t.me/privates_bots" target="_blank" style="color: #1cdce8; font-weight: bold;">Privates Bots</a></h1>
+    <p>
+        Welcome to our image uploading platform, where you can easily upload, share, and manage your images. We provide fast, reliable, and secure services with customizable options such as setting an expiration time and custom image names.
+    </p>
+    <p>
+        Created by <a href="https://t.me/swastik_raj" target="_blank" style="color: #1cdce8;">Swastik</a> and powered by the <a href="https://t.me/privates_bots" target="_blank" style="color: #1cdce8;">Privates Bots</a> team, our goal is to provide an easy and intuitive experience for users who want to upload images and share them securely with friends and the world.
+    </p>
+    <p>
+        Whether you want a one-time use image or a permanent upload, our platform offers flexible expiration times and the ability to customize your image names for easy identification. Enjoy sharing your creations!
+    </p>
+</header>
+
+  <section class="upload-section">
+    <h2>Upload Your Image</h2>
+    
+    <label for="imageFile">Choose An Image To Upload:</label>
+    <input type="file" id="imageFile" accept="image/*">
+    
+    <label for="imageURL">Enter An Image Name (Optional, e.g., car, cat):</label>
+    <input type="text" id="imageURL" placeholder="Image name (without extension)">
+    
+    <label for="expiration">Set Expiration Time (Optional):</label>
+    <select id="expiration">
+      <option value="no-limit">No Limit</option>
+      <option value="1">1 minute</option>
+      <option value="5">5 minutes</option>
+      <option value="10">10 minutes</option>
+      <option value="30">30 minutes</option>
+      <option value="60">1 hour</option>
+      <option value="120">2 hours</option>
+      <option value="180">3 hours</option>
+      <option value="240">4 hours</option>
+      <option value="360">6 hours</option>
+      <option value="720">12 hours</option>
+      <option value="1440">1 day</option>
+    </select>
+    
+    <button id="uploadButton">Upload Image</button>
+
+    <div id="loadingSpinner" class="spinner"></div>
+
+    <div id="resultMessage" style="margin-top: 20px; font-size: 1.2rem; color: #fff;"></div>
+    <div class="image-preview" id="imagePreview" style="display:none;">
+      <img id="previewImage" src="" alt="Image Preview" style="display:none;">
+      <div class="image-details" id="imageDetails"></div>
+      <a id="imageLink" href="#" target="_blank" style="display:none;">View Uploaded Image</a>
+      <button id="copyUrlButton" style="display:none;">Copy URL</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2024 <a href="https://t.me/privates_bots" style="color: #1cdce8;">Privacy Bots</a></p>
+  </footer>
+
+  <script>
+   // Particle.js configuration (optional, same as previously provided)
+particlesJS("particles-js", {
+    particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        shape: { type: "circle", stroke: { width: 0, color: "#000" } },
+        opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+        size: { value: 3, random: true, anim: { enable: true, speed: 4, size_min: 0.1, sync: false } },
+        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: "random", random: true, straight: false, out_mode: "out" }
+    },
+    interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "repulse" } },
+        modes: { repulse: { distance: 100, duration: 0.4 } }
+    },
+    retina_detect: true
+});
+
+// DOM elements
+const uploadButton = document.getElementById("uploadButton");
+const imageFile = document.getElementById("imageFile");
+const imageURL = document.getElementById("imageURL");
+const expiration = document.getElementById("expiration");
+const resultMessage = document.getElementById("resultMessage");
+const imagePreview = document.getElementById("imagePreview");
+const previewImage = document.getElementById("previewImage");
+const imageDetails = document.getElementById("imageDetails");
+const imageLink = document.getElementById("imageLink");
+const copyUrlButton = document.getElementById("copyUrlButton");
+const loadingSpinner = document.getElementById("loadingSpinner");
+
+// Upload button click handler
+uploadButton.addEventListener("click", () => {
+    const file = imageFile.files[0];
+    const name = imageURL.value;
+    const expireTime = expiration.value;
+
+    // Validation
+    if (!file) {
+        resultMessage.textContent = "Please choose an image to upload.";
+        return;
+    }
+
+    // Show loading spinner
+    loadingSpinner.style.display = "block";
+    resultMessage.textContent = "Uploading...";
+
+    // Prepare form data
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("imageURL", name);
+    formData.append("expiration", expireTime);
+
+    // Send the upload request
+    fetch("upload.php", {
+        method: "POST",
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            loadingSpinner.style.display = "none";
+
+            if (data.success) {
+                // Success: Display image details
+                resultMessage.textContent = "Image uploaded successfully!";
+                imagePreview.style.display = "block";
+                previewImage.src = data.imageURL;
+                previewImage.style.display = "block";
+                imageDetails.textContent = `Name: ${data.imageName} | Expiration: ${data.expirationTime}`;
+                imageLink.href = data.imageURL;
+                imageLink.style.display = "inline-block";
+                copyUrlButton.style.display = "inline-block";
+
+                // Copy URL functionality
+                copyUrlButton.addEventListener("click", () => {
+                    navigator.clipboard.writeText(data.imageURL).then(() => {
+                        alert("Image URL copied to clipboard!");
+                    });
+                });
+            } else {
+                // Error: Display error message
+                resultMessage.textContent = data.message || "Failed to upload image.";
+            }
+        })
+        .catch(() => {
+            loadingSpinner.style.display = "none";
+            resultMessage.textContent = "An error occurred while uploading.";
+        });
+});
+
+  </script>
+</body>
+</html>
+
